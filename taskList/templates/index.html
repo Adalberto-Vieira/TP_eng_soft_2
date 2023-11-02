@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>task List</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    </head>
+    <body>
+
+        <div class="d-flex justify-content-center">
+            <div class="d-flex flex-column bd-highlight mb-3">
+                <div class="p-2 bd-highlight">
+                    <h3> Add a task </h3> 
+                </div>
+                <div class="p-2 bd-highlight">
+                    <form action="{{ url_for('site.creat_task') }}" class="form" method='POST'>
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" name="title" required><br><br>
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" name="description"><br><br>
+                        <input type="submit" value="Submit">
+                    </form>
+                    {% if warning %}
+                    <div class="alert alert-danger" role="alert">
+                        Failed to add a new task do to lack off title!
+                    </div>
+                    {% endif %}
+                </div>
+                <h2> Uncompleted tasks </h2>
+                <div class="p-2 bd-highlight">
+                    <ul class="list-group">
+                    {% for task in uncompleted_tasks %}
+                        <li class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{uncompleted_tasks[task]["title"]}}</h5>
+                            </div>
+                            <p>{{task}}</p>
+                            <p class="mb-1">{{uncompleted_tasks[task]["description"]}}</p>
+                            <form action="{{ url_for('site.edit_task') }}" id="form-{{task}}"class="form" method='POST'>
+                                <label for="title">Title:</label>
+                                <input type="text" id="title" value="{{uncompleted_tasks[task]['title']}}" name="title" required><br>
+                                <label for="description">Description:</label>
+                                <input type="text" id="description" name="description" value="{{uncompleted_tasks[task]['description']}}"><br>
+                                <select name="status" form="form-{{task}}">
+                                    <option value="0" default>In progress</option>
+                                    <option value="1">Completed</option>
+                                </select>
+                                <input type="hidden" id="id" name="id" value="{{task}}"><br>
+                                <input type="submit" value="Edit"></input>
+                            </form>
+                            <form action="{{ url_for('site.move_bin',id=task)}}" id="form" class="form" method='POST'>
+                                <button type="submit"> Move to bin </button>
+                            </form>
+                        </li>
+                    {% endfor %}
+
+                    </ul>
+                </div>
+                <br>
+                <h2> Completed tasks </h2>
+                <div class="p-2 bd-highlight">
+                    <ul class="list-group">
+                    {% for task in completed_task %}
+                        <li class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{completed_task[task]["title"]}}</h5>
+                            </div>
+                            <p>{{task}}</p>
+                            <p class="mb-1">{{completed_task[task]["description"]}}</p>
+                            <form action="{{ url_for('site.edit_task') }}" id="form-{{task}}"class="form" method='POST'>
+                                <label for="title">Title:</label>
+                                <input type="text" id="title" readonly value="{{completed_task[task]['title']}}" name="title" required><br>
+                                <label for="description">Description:</label>
+                                <input type="text" readonly id="description" name="description" value="{{completed_task[task]['description']}}"><br>
+                                <select name="status" form="form-{{task}}">
+                                    <option value="1" default>Completed</option>
+                                    <option value="0" >In progress</option>
+                                </select>
+                                <input type="hidden" id="id" name="id" value="{{task}}"><br>
+                                <input type="submit" value="Edit"></input>
+                            </form>
+                        </li>
+                    {% endfor %}
+                    
+                    </ul>
+                </div>
+
+                <h2> Bin </h2>
+                <div class="p-2 bd-highlight">
+                    <ul class="list-group">
+                    {% for task in bin %}
+                        <li class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{bin[task]["title"]}}</h5>
+                            </div>
+                            <p>{{task}}</p>
+                            <p class="mb-1">{{bin[task]["description"]}}</p>
+                            <form action="{{ url_for('site.move_from_bin',id=task)}}" id="form" class="form" method='POST'>
+                                <button type="submit"> Move from bin </button>
+                            </form>
+                            <form action="{{ url_for('site.delete',id=task)}}" id="form" class="form" method='POST'>
+                                <button type="submit"> Delete </button>
+                            </form>
+                        </li>
+                    {% endfor %}
+
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+</html>
