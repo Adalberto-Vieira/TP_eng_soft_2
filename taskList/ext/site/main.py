@@ -1,13 +1,13 @@
 from flask import Blueprint, render_template, make_response, jsonify, request
 from .task_list import TaskList
 
-bp = Blueprint("site", __name)
+bp = Blueprint("site", __name__)
 task_list = TaskList()
 
 def render_index(warning=False):
     return render_template("index.html", 
                             uncompleted_tasks=task_list.get_uncompleted_tasks(),
-                            completed_task=task_list.get_completed_task(),
+                            completed_task=task_list.get_completed_tasks(),
                             bin=task_list.get_bin(),
                             warning=warning)
 

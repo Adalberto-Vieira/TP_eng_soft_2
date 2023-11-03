@@ -30,12 +30,8 @@ class TaskList:
 
     def create_id(self):
         return str(uuid.uuid4())
-
-    def edit_task(self, task_id, title=None, description=None, completed=None):
-        if task_id not in self.task_list:
     
-    def edit_task(self, id, title:str, description:str,
-                    completed:bool) -> None:
+    def edit_task(self, id, title:str, description:str, completed:bool) -> None:
         """ Alters task data """
         try:
             if title is not None:
