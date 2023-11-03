@@ -4,6 +4,7 @@
 ## Integrantes
 
 - Adalberto Barbosa Vieira - https://github.com/Adalberto-Vieira
+- Samai Soares Pereira - https://github.com/samai-s
 
 
 ## Task List APP
