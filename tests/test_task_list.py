@@ -146,23 +146,13 @@ def test_task_should_update_title_when_it_is_edited(task_list):
     new_title:str = "new" + old_title
     task_list.create_id = MagicMock(return_value=0)
 
-    task_list.create_task(old_title, "testing")
-    task_list.edit_task(0, title=new_title)
+    task_list.create_task(old_title, "testing", False)
+    task_list.edit_task(0, title=new_title, description="testing", completed=False)
 
     task = task_list.get_task_by_id(id=0)
 
     assert task["title"] == new_title
 
-def test_task_should_not_update_title_when_it_is_not_edited(task_list):
-    title:str = "test1"
-    task_list.create_id = MagicMock(return_value=0)
-
-    task_list.create_task(title, "testing")
-    task_list.edit_task(0)
-
-    task = task_list.get_task_by_id(id=0)
-
-    assert task["title"] == title
 
 def test_task_should_update_description_when_it_is_edited(task_list):
     old_description:str = "testing"
@@ -170,42 +160,23 @@ def test_task_should_update_description_when_it_is_edited(task_list):
     task_list.create_id = MagicMock(return_value=0)
 
     task_list.create_task("test1", old_description)
-    task_list.edit_task(0, description=new_description)
+    task_list.edit_task(0, title="test1", description=new_description, completed=False)
 
     task = task_list.get_task_by_id(id=0)
 
     assert task["description"] == new_description
 
-def test_task_should_not_update_description_when_it_is_not_edited(task_list):
-    description:str = "testing"
-    task_list.create_id = MagicMock(return_value=0)
-
-    task_list.create_task("test1", description)
-    task_list.edit_task(0)
-
-    task = task_list.get_task_by_id(id=0)
-
-    assert task["description"] == description
 
 def test_task_should_update_completion_status_when_it_is_edited(task_list):
     task_list.create_id = MagicMock(return_value=0)
 
     task_list.create_task("test1", "testing")
-    task_list.edit_task(0, completed=True)
+    task_list.edit_task(0, "test1", "testing", True)
 
     task = task_list.get_task_by_id(id=0)
 
     assert task["completed"] == True
 
-def test_task_should_not_update_title_when_title_is_not_edited(task_list):
-    task_list.create_id = MagicMock(return_value=0)
-
-    task_list.create_task("test1", "testing")
-    task_list.edit_task(0)
-
-    task = task_list.get_task_by_id(id=0)
-
-    assert task["completed"] == False
 
 def test_editing_fails_when_title_is_empty(task_list):
     with pytest.raises(EmptyTitleException) as e_info:
@@ -214,7 +185,7 @@ def test_editing_fails_when_title_is_empty(task_list):
             task_list.create_id = MagicMock(return_value=0)
 
             task_list.create_task(old_title, "testing")
-            task_list.edit_task(0, title=new_title)
+            task_list.edit_task(0, title=new_title, description="testing", completed=False)
 
 def test_task_without_deadline_has_no_urgency(task_list):
     task_list.create_id = MagicMock(return_value=0)
@@ -374,7 +345,7 @@ def test_delete_task_from_bin(task_list):
 def test_edit_task_unknown_id_single_field_fail(task_list):
     task_id = task_list.create_task("Task 1", "Description")
     with pytest.raises(UnknownIdException):
-        task_list.edit_task("unknown_id", title="Updated Title")
+        task_list.edit_task("unknown_id", title="Updated Title", completed=False, description="tes")
 
 def test_get_task_by_id_success(task_list):
     task_id = task_list.create_task("Task 1", "Description")

@@ -33,6 +33,28 @@ class TaskList:
 
     def edit_task(self, task_id, title=None, description=None, completed=None):
         if task_id not in self.task_list:
+    
+    def edit_task(self, id, title:str, description:str,
+                    completed:bool) -> None:
+        """ Alters task data """
+        try:
+            if title is not None:
+                if title == "":
+                    raise EmptyTitleException("Task must have a title")
+                self.task_list[id]['title'] = title
+
+            self.task_list[id]['description'] = description
+
+            self.task_list[id]['completed'] = completed
+        except KeyError:
+            print(self.task_list)
+            raise UnknownIdException()
+            
+    def get_task_by_id(self, id):
+        """ Return task by id """
+        try:
+            return self.task_list[id]
+        except KeyError:
             raise UnknownIdException()
 
         task = self.task_list[task_id]
