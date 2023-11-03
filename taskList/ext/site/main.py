@@ -22,7 +22,7 @@ def create_task():
         task_list.create_task(request.form.get('title'), request.form.get('description'))
     except:
         warning = True
-    return render_index(warning)
+    return render_index(warning) 
 
 @bp.route("/get_tasks")
 def get_tasks():
