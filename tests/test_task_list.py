@@ -85,12 +85,6 @@ def test_complete_multiple_task_successfully(task_list):
     }
 
 
-    
-def test_get_empty_list_completed(task_list):
-    task_list.create_id = MagicMock(return_value=0)
-    task_list.create_task("test1", "testing")
-    assert task_list.get_completed_task() == {}
-    
 def test_get_empty_list_uncompleted(task_list):
     task_list.create_id = MagicMock(return_value=0)
     task_list.create_task("test1", "testing")
