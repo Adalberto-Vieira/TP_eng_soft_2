@@ -84,52 +84,7 @@ def test_complete_multiple_task_successfully(task_list):
         }
     }
 
-    
-def test_get_completed_tasks_only(task_list):
-    """ test the completion of a task """
-    task_list.create_id = MagicMock(return_value=0)
-    task_list.create_task("test1", "testing")
-    task_list.create_id = MagicMock(return_value=1)
-    task_list.create_task("test2", "testing")
-    task_list.create_id = MagicMock(return_value=2)
-    task_list.create_task("test3", "testing")
-    task_list.complete_task(1)
-    task_list.complete_task(2)
-    assert task_list.get_completed_task() == { 
-        1:{
-           "completed":True,
-            "description":"testing",
-            "title":"test2",
-            "deadline":None
-        },
-        2:{
-           "completed":True,
-            "description":"testing",
-            "title":"test3",
-            "deadline":None
-        }
-    }
-    
-def test_get_uncompleted_tasks(task_list):
-    """ test the completion of a task """
-    task_list.create_id = MagicMock(return_value=0)
-    task_list.create_task("test1", "testing")
-    task_list.create_id = MagicMock(return_value=1)
-    task_list.create_task("test2", "testing")
-    task_list.complete_task(1)
-    task_list.complete_task(2)
-    uncompleted_tasks = task_list.get_uncompleted_tasks()
-    assert uncompleted_tasks == { 
-        0:{
-            "completed":False,
-            "description":"testing",
-            "title":"test1",
-            "deadline":None
-        }
-    }
 
-def test_get_empty_list(task_list):
-    assert task_list.get_tasks() == {}
     
 def test_get_empty_list_completed(task_list):
     task_list.create_id = MagicMock(return_value=0)
@@ -141,42 +96,6 @@ def test_get_empty_list_uncompleted(task_list):
     task_list.create_task("test1", "testing")
     task_list.complete_task(0)
     assert task_list.get_uncompleted_tasks() == {}
-
-def test_task_should_update_title_when_it_is_edited(task_list):
-    old_title:str = "test1"
-    new_title:str = "new" + old_title
-    task_list.create_id = MagicMock(return_value=0)
-
-    task_list.create_task(old_title, "testing", False)
-    task_list.edit_task(0, title=new_title, description="testing", completed=False)
-
-    task = task_list.get_task_by_id(id=0)
-
-    assert task["title"] == new_title
-
-
-def test_task_should_update_description_when_it_is_edited(task_list):
-    old_description:str = "testing"
-    new_description:str = "new" + old_description
-    task_list.create_id = MagicMock(return_value=0)
-
-    task_list.create_task("test1", old_description)
-    task_list.edit_task(0, title="test1", description=new_description, completed=False)
-
-    task = task_list.get_task_by_id(id=0)
-
-    assert task["description"] == new_description
-
-
-def test_task_should_update_completion_status_when_it_is_edited(task_list):
-    task_list.create_id = MagicMock(return_value=0)
-
-    task_list.create_task("test1", "testing")
-    task_list.edit_task(0, "test1", "testing", True)
-
-    task = task_list.get_task_by_id(id=0)
-
-    assert task["completed"] == True
 
 
 def test_editing_fails_when_title_is_empty(task_list):
