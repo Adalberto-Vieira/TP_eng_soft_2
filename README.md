@@ -15,7 +15,7 @@ TaskList é um sistema de gerenciador de tarefas, uma aplicação web em que o u
 - Python: Linguagem de programação utilizada para a criação do sistema;
 - Flask: Framework web utilizado para construir a aplicação web;
 - HTML: Utilizado para a estrutura e o estilo das páginas web;
-- pytest: Biblioteca utilizada para escrever os testes do sistema;
+- pytest & Selenium: Biblioteca utilizada para escrever os testes do sistema;
 - Docker: Plataforma de contêineres utilizada para facilitar a implantação e execução do sistema.
 
 ## Como rodar o Sistema
